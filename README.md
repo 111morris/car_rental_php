@@ -1,17 +1,12 @@
-Absolutely! Based on your setup and the files you’ve shared, here’s a full **README.md** tailored for your PHP Car Rental project. I’ve included all steps: prerequisites, installation, database setup, and running the project.
-
-You can copy this as-is and tweak it if you want to add more project-specific details later.
-
----
+# Car Rental PHP Project
 
 ````markdown
-# Car Rental PHP Project
 
 A simple car rental management system built with PHP and MySQL. This project allows users to view and rent cars, and provides an admin panel for managing cars, rates, and users.
 
 ---
 
-## Table of Contents
+Table of Contents
 
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
@@ -23,7 +18,7 @@ A simple car rental management system built with PHP and MySQL. This project all
 
 ---
 
-## Prerequisites
+Prerequisites
 
 Make sure you have the following installed on your system:
 
