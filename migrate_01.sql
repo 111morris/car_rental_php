@@ -66,20 +66,20 @@ CREATE TABLE IF NOT EXISTS transaction (
 -- -----------------------------
 -- TRIGGERS
 -- -----------------------------
-DROP TRIGGER IF EXISTS STOCK_UPDATE_DECREASE;
-DROP TRIGGER IF EXISTS STOCK_UPDATE_INCREASE;
-DELIMITER $$ CREATE TRIGGER STOCK_UPDATE_DECREASE
-AFTER
-INSERT ON transaction FOR EACH ROW BEGIN
-UPDATE cars
-SET stock = stock - 1
-WHERE _id = NEW.car_id;
-END $$ CREATE TRIGGER STOCK_UPDATE_INCREASE
-AFTER DELETE ON transaction FOR EACH ROW BEGIN
-UPDATE cars
-SET stock = stock + 1
-WHERE _id = OLD.car_id;
-END $$ DELIMITER;
+-- DROP TRIGGER IF EXISTS STOCK_UPDATE_DECREASE;
+-- DROP TRIGGER IF EXISTS STOCK_UPDATE_INCREASE;
+-- DELIMITER $$ CREATE TRIGGER STOCK_UPDATE_DECREASE
+-- AFTER
+-- INSERT ON transaction FOR EACH ROW BEGIN
+-- UPDATE cars
+-- SET stock = stock - 1
+-- WHERE _id = NEW.car_id;
+-- END $$ CREATE TRIGGER STOCK_UPDATE_INCREASE
+-- AFTER DELETE ON transaction FOR EACH ROW BEGIN
+-- UPDATE cars
+-- SET stock = stock + 1
+-- WHERE _id = OLD.car_id;
+-- END $$ DELIMITER;
 -- -----------------------------
 -- SEED DATA
 -- -----------------------------
