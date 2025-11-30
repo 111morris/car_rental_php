@@ -166,6 +166,11 @@ car-rental-php/
 
 > You can log in as this admin user to manage the system.
 
+## SQL
+DDL and initial configuration is present in migrate_00.sql and migrate_01.sql respectively
+
+Admin Login and Password : `admin` - `password`
+
 ---
 
 ## Notes
