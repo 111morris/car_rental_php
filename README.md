@@ -48,8 +48,8 @@ database/
 
 1.  **Clone the repository**
     ```bash
-    git clone <repository-url>
-    cd car-rental-php
+    git clone https://github.com/111morris/car_rental_php.git
+    cd car_rental_php
     ```
 
 2.  **Setup Database**
