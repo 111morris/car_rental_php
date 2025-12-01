@@ -1,190 +1,92 @@
-# Car Rental PHP Project
+# CarJack - PHP Car Rental System
 
-````markdown
+A modern, MVC-based Car Rental Website built with PHP 8, PDO, and Bootstrap 5. This project demonstrates clean architecture, secure authentication, and a complete booking flow.
 
-A simple car rental management system built with PHP and MySQL. This project allows users to view and rent cars, and provides an admin panel for managing cars, rates, and users.
+## Features
 
----
-
-Table of Contents
-
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Database Setup](#database-setup)
-- [Running the Project](#running-the-project)
-- [Project Structure](#project-structure)
-- [Admin User](#admin-user)
-- [Notes](#notes)
-
----
-
-Prerequisites
-
-Make sure you have the following installed on your system:
-
-1. **PHP 8+**  
-   Check with:  
-   ```bash
-   php -v
-   
-````
-
-2. **MySQL 8+**
-   Check with:
-
-   ```bash
-   mysql --version
-   ```
-
-3. **Composer (Optional)** if using external PHP packages:
-
-   ```bash
-   composer --version
-   ```
-
-4. **Git** (Optional, for cloning the repository):
-
-   ```bash
-   git --version
-   ```
-
----
-
-## Installation
-
-1. Clone the repository:
-
-```bash
-git clone <your-repo-url>
-cd car-rental-php
-```
-
-2. Make sure the `public` folder contains the `index.php` file. This is your project entry point.
-
----
-
-## Database Setup
-
-### 1. Log in to MySQL as an admin user
-
-If you haven’t created the project database user yet, you can log in as `root` or `mysql` superuser:
-
-```bash
-sudo mysql -u root -p
-```
-
-### 2. Create the database and user
-
-```sql
--- Create the database
-CREATE DATABASE carjack;
-
--- Create the project user (change password as needed)
-CREATE USER 'carjack_admin'@'localhost' IDENTIFIED BY 'wazebra';
-
--- Give privileges to the user
-GRANT ALL PRIVILEGES ON carjack.* TO 'carjack_admin'@'localhost';
-
--- Apply privileges
-FLUSH PRIVILEGES;
-```
-
-### 3. Import database schema and seed data
-
-#### a) Clear existing database (optional, if re-running)
-
-```bash
-mysql -u carjack_admin -p
-```
-
-Then inside MySQL:
-
-```sql
-DROP DATABASE IF EXISTS carjack;
-CREATE DATABASE carjack;
-EXIT;
-```
-
-#### b) Run migrations
-
-```bash
-# Step 1: Create tables and triggers
-mysql -u carjack_admin -p carjack < migrate_00.sql
-
-# Step 2: Insert initial data
-mysql -u carjack_admin -p carjack < migrate_01.sql
-```
-
-You can verify:
-
-```bash
-mysql -u carjack_admin -p carjack
-SHOW TABLES;
-SELECT * FROM user;
-SELECT * FROM cars;
-```
-
----
-
-## Running the Project
-
-Start the built-in PHP development server from the project root:
-
-```bash
-php -S localhost:8000 -t public
-```
-
-* Open your browser and visit: [http://localhost:8000](http://localhost:8000)
-* You should see the project running.
-
----
+- **MVC Architecture**: Clear separation of Models, Views, and Controllers.
+- **Custom Routing**: Lightweight router handling GET and POST requests.
+- **Authentication**: Secure login and registration with `password_hash`.
+- **Booking System**: Rent cars by Hour, Day, or KM with automatic stock management.
+- **Admin Panel**: Manage cars and view inventory.
+- **Responsive Design**: Built with Bootstrap 5 for mobile-friendly layouts.
+- **Security**: Uses PDO prepared statements to prevent SQL injection.
 
 ## Project Structure
 
 ```
-car-rental-php/
-│
-├── classes/          # PHP classes for DB, pages, services
-├── public/           # Entry point (index.php)
-├── migrate_00.sql    # Database schema (tables + triggers)
-├── migrate_01.sql    # Initial data (users, cars, rates)
-├── Database.php      # Database connection class
-├── README.md         # Project documentation
+app/
+├── Config/         # Database configuration
+├── Controllers/    # Request handlers (Auth, Car, Booking, Admin)
+├── Core/           # Framework core (Router, Model, View, App)
+├── Models/         # Data access layer
+├── Services/       # Business logic
+└── routes.php      # Route definitions
+
+public/             # Web root
+├── index.php       # Entry point
+└── .htaccess       # URL rewriting
+
+views/              # HTML Templates
+├── auth/           # Login/Register views
+├── bookings/       # Booking flow views
+├── cars/           # Car listing views
+├── home/           # Homepage
+└── layouts/        # Header/Footer partials
+
+database/
+└── schema.sql      # Database schema and seed data
 ```
 
----
+## Prerequisites
 
-## Admin User
+- PHP 8.0 or higher
+- MySQL 5.7 or higher
+- Apache (or PHP built-in server)
 
-* Default admin credentials (from `migrate_01.sql`):
+## Installation
 
-| Field    | Value                                       |
-| -------- | ------------------------------------------- |
-| Username | admin                                       |
-| Email    | [admin@io.io](mailto:admin@io.io)           |
-| Password | The hashed password from migration (bcrypt) |
+1.  **Clone the repository**
+    ```bash
+    git clone <repository-url>
+    cd car-rental-php
+    ```
 
-> You can log in as this admin user to manage the system.
+2.  **Setup Database**
+    - Create a MySQL database named `carjack`.
+    - Import the schema and seed data:
+    ```bash
+    mysql -u root -p carjack < database/schema.sql
+    ```
+    *(Note: The default database config in `app/Config/Database.php` assumes `localhost`, user `root`, and empty password. Update this file if your credentials differ.)*
 
-## SQL
-DDL and initial configuration is present in migrate_00.sql and migrate_01.sql respectively
+3.  **Run the Application**
+    - **Using PHP Built-in Server**:
+      ```bash
+      cd public
+      php -S localhost:8000
+      ```
+    - **Using Apache**:
+      - Point your virtual host document root to the `public/` folder.
+      - Ensure `mod_rewrite` is enabled.
 
-Admin Login and Password : `admin` - `password`
+4.  **Access the App**
+    - Open `http://localhost:8000` in your browser.
 
----
+## Default Credentials
 
-## Notes
+**Admin User:**
+- Username: `admin`
+- Password: `password`
 
-* Ensure MySQL is running before starting the PHP server.
-* If you see errors like `Call to a member function prepare() on null`, it usually means the database connection failed.
-* Always run `migrate_00.sql` first, then `migrate_01.sql`.
-* If you want to reset the database, drop the `carjack` database and re-run migrations.
+## Usage
 
----
+1.  **Register/Login**: Create a new account or use the admin credentials.
+2.  **Browse Cars**: View the fleet of available cars.
+3.  **Rent a Car**: Select a car, choose a rental mode (Day/Hour/KM), and confirm.
+4.  **My Rentals**: View your active and past rentals.
+5.  **Admin Dashboard**: Log in as admin to manage the fleet.
 
-```markdown
+## License
 
-If you want, I can also **add a "full automated setup" section** where a user could run **all commands in one go**, including creating the database, user, schema, and seed data—so they just copy-paste a few commands and everything works.  
-
-Do you want me to add that?
-```
+This project is open-source and available under the MIT License.
