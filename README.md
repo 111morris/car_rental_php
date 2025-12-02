@@ -43,8 +43,28 @@ database/
 - PHP 8.0 or higher
 - MySQL 5.7 or higher
 - Apache (or PHP built-in server)
+- **OR** Docker and Docker Compose
 
 ## Installation
+
+### Option 1: Docker (Recommended)
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/111morris/car_rental_php.git
+    cd car_rental_php
+    ```
+
+2.  **Run with Docker Compose**
+    ```bash
+    docker-compose up -d
+    ```
+    This will start the PHP application on port `8080` and a MySQL database. The database will be automatically initialized with the schema and seed data.
+
+3.  **Access the App**
+    - Open `http://localhost:8080` in your browser.
+
+### Option 2: Manual Setup
 
 1.  **Clone the repository**
     ```bash
@@ -58,7 +78,7 @@ database/
     ```bash
     mysql -u root -p carjack < database/schema.sql
     ```
-    *(Note: The default database config in `app/Config/Database.php` assumes `localhost`, user `root`, and empty password. Update this file if your credentials differ.)*
+    *(Note: Update `app/Config/config.php` if your local database credentials differ from the defaults.)*
 
 3.  **Run the Application**
     - **Using PHP Built-in Server**:
