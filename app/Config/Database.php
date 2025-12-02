@@ -25,11 +25,22 @@ class Database
             $config = require $configFile;
         }
         
-        $this->host = $config['db_host'] ?? getenv('DB_HOST') ?: 'localhost';
-        $this->db_name = $config['db_name'] ?? getenv('DB_NAME') ?: 'carjack';
-        $this->username = $config['db_user'] ?? getenv('DB_USER') ?: 'root';
-        $this->password = $config['db_pass'] ?? getenv('DB_PASS') ?: '';
-        $this->port = $config['db_port'] ?? getenv('DB_PORT') ?: '3306';
+        $dbUrl = getenv('DATABASE_URL');
+        
+        if ($dbUrl) {
+            $dbOpts = parse_url($dbUrl);
+            $this->host = $dbOpts['host'];
+            $this->db_name = ltrim($dbOpts['path'], '/');
+            $this->username = $dbOpts['user'];
+            $this->password = $dbOpts['pass'];
+            $this->port = $dbOpts['port'] ?? 3306;
+        } else {
+            $this->host = $config['db_host'] ?? getenv('DB_HOST') ?: 'localhost';
+            $this->db_name = $config['db_name'] ?? getenv('DB_NAME') ?: 'carjack';
+            $this->username = $config['db_user'] ?? getenv('DB_USER') ?: 'root';
+            $this->password = $config['db_pass'] ?? getenv('DB_PASS') ?: '';
+            $this->port = $config['db_port'] ?? getenv('DB_PORT') ?: '3306';
+        }
 
         try {
             $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->db_name};charset=utf8mb4";
@@ -37,7 +48,7 @@ class Database
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            die("Connection failed: " . $e->getMessage());
+            die("Connection failed: " . $e->getMessage() . " (Target Host: {$this->host})");
         }
     }
 
