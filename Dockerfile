@@ -18,5 +18,11 @@ COPY . /var/www/html
 # Set permissions for Apache
 RUN chown -R www-data:www-data /var/www/html
 
+# Update Apache DocumentRoot to public directory
+RUN sed -i 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
+
+# Suppress ServerName warning
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
 # Expose port 80
 EXPOSE 80
