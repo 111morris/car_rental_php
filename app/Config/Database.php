@@ -18,13 +18,18 @@ class Database
 
     private function __construct()
     {
-        $config = require __DIR__ . '/config.php';
+        $configFile = __DIR__ . '/config.php';
+        $config = [];
         
-        $this->host = $config['db_host'];
-        $this->db_name = $config['db_name'];
-        $this->username = $config['db_user'];
-        $this->password = $config['db_pass'];
-        $this->port = $config['db_port'];
+        if (file_exists($configFile)) {
+            $config = require $configFile;
+        }
+        
+        $this->host = $config['db_host'] ?? getenv('DB_HOST') ?: 'localhost';
+        $this->db_name = $config['db_name'] ?? getenv('DB_NAME') ?: 'carjack';
+        $this->username = $config['db_user'] ?? getenv('DB_USER') ?: 'root';
+        $this->password = $config['db_pass'] ?? getenv('DB_PASS') ?: '';
+        $this->port = $config['db_port'] ?? getenv('DB_PORT') ?: '3306';
 
         try {
             $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->db_name};charset=utf8mb4";
