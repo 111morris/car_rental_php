@@ -2,6 +2,8 @@
 
 A modern, MVC-based Car Rental Website built with PHP 8, PDO, and Bootstrap 5. This project demonstrates clean architecture, secure authentication, and a complete booking flow.
 
+**Live Demo:** [https://wazebra.myrx.pw](https://wazebra.myrx.pw)
+
 ## Features
 
 - **MVC Architecture**: Clear separation of Models, Views, and Controllers.
