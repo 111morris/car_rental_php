@@ -67,6 +67,8 @@ CREATE TABLE bookings (
     mode ENUM('km', 'day', 'hour') NOT NULL,
     value INT NOT NULL, -- Duration or Distance
     total_cost INT NOT NULL,
+    start_date DATETIME,
+    end_date DATETIME,
     status ENUM('active', 'completed', 'cancelled') DEFAULT 'active',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT bookings_user_id_fk FOREIGN KEY (user_id) REFERENCES user(_id) ON DELETE CASCADE ON UPDATE CASCADE,
