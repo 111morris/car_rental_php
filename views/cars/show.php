@@ -1,4 +1,5 @@
 <?php include __DIR__ . '/../layouts/header.php'; ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     .grayscale { filter: grayscale(100%); opacity: 0.8; }
 </style>
@@ -14,6 +15,16 @@
     </div>
     <div class="col-md-6">
         <h2><?= htmlspecialchars($car['name']) ?></h2>
+        
+        <div class="d-flex gap-4 mb-3 fs-5 text-secondary">
+            <div title="Seats">
+                <i class="fas fa-users"></i> <?= $car['seats'] ?? 4 ?> Seats
+            </div>
+            <div title="Transmission">
+                <i class="fas fa-cog"></i> <?= ucfirst($car['transmission'] ?? 'manual') ?>
+            </div>
+        </div>
+
         <p class="lead"><?= htmlspecialchars($car['info']) ?></p>
         
         <div class="card bg-light mb-3">

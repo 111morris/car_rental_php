@@ -24,6 +24,21 @@
                         <label class="form-label">Stock</label>
                         <input type="number" class="form-control" name="stock" value="<?= $car['stock'] ?>" required min="0">
                     </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Seats</label>
+                            <input type="number" class="form-control" name="seats" required min="1" max="10" value="<?= $car['seats'] ?? 4 ?>">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Transmission</label>
+                            <select class="form-select" name="transmission">
+                                <option value="manual" <?= ($car['transmission'] ?? '') == 'manual' ? 'selected' : '' ?>>Manual</option>
+                                <option value="automatic" <?= ($car['transmission'] ?? '') == 'automatic' ? 'selected' : '' ?>>Automatic</option>
+                                <option value="both" <?= ($car['transmission'] ?? '') == 'both' ? 'selected' : '' ?>>Both</option>
+                            </select>
+                        </div>
+                    </div>
                     
                     <hr>
                     <h5>Rates</h5>
