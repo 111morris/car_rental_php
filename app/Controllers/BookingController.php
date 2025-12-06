@@ -43,11 +43,15 @@ class BookingController extends Controller
         $carId = $_POST['car_id'];
         $mode = $_POST['mode'];
         $value = $_POST['value'];
+        $startDate = $_POST['start_date'];
 
-        if ($this->bookingService->createBooking($userId, $carId, $mode, $value)) {
+        if ($this->bookingService->createBooking($userId, $carId, $mode, $value, $startDate)) {
             $this->redirect('/my-rentals');
         } else {
-            $this->view('bookings/create', ['error' => 'Booking failed', 'car' => $this->carService->getCar($carId)]);
+            $this->view('bookings/create', [
+                'error' => 'Booking failed: Car unavailable for selected dates or system error.',
+                'car' => $this->carService->getCar($carId)
+            ]);
         }
     }
 
@@ -60,5 +64,28 @@ class BookingController extends Controller
         $userId = Session::get('user_id');
         $rentals = $this->bookingService->getUserRentals($userId);
         $this->view('bookings/index', ['rentals' => $rentals]);
+    }
+    
+    public function apiGetBookings() {
+        $carId = $_GET['car_id'] ?? null;
+        if(!$carId) {
+            echo json_encode([]);
+            return;
+        }
+        
+        $bookings = $this->bookingService->getBlockedDates($carId);
+        $events = [];
+        foreach($bookings as $booking) {
+            $events[] = [
+                'title' => 'Booked',
+                'start' => $booking['start_date'],
+                'end' => $booking['end_date'],
+                'color' => '#ff0000'
+            ];
+        }
+        
+        header('Content-Type: application/json');
+        echo json_encode($events);
+        exit;
     }
 }

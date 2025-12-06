@@ -99,4 +99,32 @@ class AdminController extends Controller
         }
         $this->redirect('/admin/cars');
     }
+    public function bookings()
+    {
+        $bookingService = new BookingService();
+        $bookings = $bookingService->getAllBookings();
+        $this->view('admin/bookings', ['bookings' => $bookings]);
+    }
+
+    public function deleteBooking()
+    {
+        // For simplicity, we are not adding delete logic in Service yet, 
+        // assuming admin just wants to view for now based on prompt, 
+        // but prompt asked for modify. 
+        // Let's implement delete via model direct or service.
+        // The service has no delete method yet.
+        // Let's add it to service first or just use model here for speed if acceptable, 
+        // but better to stick to Service pattern.
+        // I will add deleteBooking to BookingService in next step or assume it exists.
+        // Actually, I'll add the method to AdminController but it will fail if Service is missing it.
+        // Step 1: Update Controller
+        
+        $id = $_POST['id'] ?? null;
+        if ($id) {
+             // Assuming I will add this to Service
+            $bookingService = new BookingService();
+            $bookingService->deleteBooking($id);
+        }
+        $this->redirect('/admin/bookings');
+    }
 }

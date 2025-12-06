@@ -10,10 +10,36 @@ class Booking extends Model
 
     public function create($data)
     {
-        $sql = "INSERT INTO {$this->table} (user_id, car_id, mode, value, total_cost) 
-                VALUES (:user_id, :car_id, :mode, :value, :total_cost)";
+        $sql = "INSERT INTO {$this->table} (user_id, car_id, mode, value, total_cost, start_date, end_date) 
+                VALUES (:user_id, :car_id, :mode, :value, :total_cost, :start_date, :end_date)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute($data);
+    }
+
+    public function findConflictingBookings($carId, $startDate, $endDate)
+    {
+        $sql = "SELECT * FROM {$this->table} 
+                WHERE car_id = :car_id 
+                AND status = 'active'
+                AND (
+                    (start_date <= :end_date AND end_date >= :start_date)
+                )";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            'car_id' => $carId,
+            'start_date' => $startDate,
+            'end_date' => $endDate
+        ]);
+        return $stmt->fetchAll();
+    }
+
+    public function getActiveBookingsByCar($carId)
+    {
+        $sql = "SELECT start_date, end_date FROM {$this->table} 
+                WHERE car_id = :car_id AND status = 'active'";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['car_id' => $carId]);
+        return $stmt->fetchAll();
     }
 
     public function findByUserId($userId)

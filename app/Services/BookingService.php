@@ -16,12 +16,33 @@ class BookingService
         $this->carModel = new Car();
     }
 
-    public function createBooking($userId, $carId, $mode, $value)
+    public function createBooking($userId, $carId, $mode, $value, $startDateStr)
     {
         $car = $this->carModel->findByIdWithRates($carId);
         
         if (!$car || $car['stock'] <= 0) {
             return false; // Car not available
+        }
+        
+        // Calculate dates
+        $startDate = new \DateTime($startDateStr);
+        $endDate = clone $startDate;
+        
+        if ($mode === 'day') {
+            $endDate->modify("+$value days");
+        } elseif ($mode === 'hour') {
+            $endDate->modify("+$value hours");
+        } else {
+            // Memory estimation for KM, assuming 1 hour minimum for calendar blocking
+             $endDate->modify("+1 hour");
+        }
+
+        $formattedStart = $startDate->format('Y-m-d H:i:s');
+        $formattedEnd = $endDate->format('Y-m-d H:i:s');
+
+        // Check availability
+        if (count($this->bookingModel->findConflictingBookings($carId, $formattedStart, $formattedEnd)) > 0) {
+            return false; // Dates overlap
         }
 
         // Calculate cost
@@ -39,7 +60,9 @@ class BookingService
             'car_id' => $carId,
             'mode' => $mode,
             'value' => $value,
-            'total_cost' => $cost
+            'total_cost' => $cost,
+            'start_date' => $formattedStart,
+            'end_date' => $formattedEnd
         ];
 
         if ($this->bookingModel->create($bookingData)) {
@@ -50,6 +73,10 @@ class BookingService
 
         return false;
     }
+    
+    public function getBlockedDates($carId) {
+        return $this->bookingModel->getActiveBookingsByCar($carId);
+    }
 
     public function getUserRentals($userId)
     {
@@ -58,5 +85,10 @@ class BookingService
     
     public function getAllBookings() {
         return $this->bookingModel->findAllWithDetails();
+    }
+
+    public function deleteBooking($id)
+    {
+        return $this->bookingModel->delete($id);
     }
 }
