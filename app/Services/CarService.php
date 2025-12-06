@@ -30,10 +30,12 @@ class CarService
             'name' => $data['name'],
             'pic' => $data['pic'],
             'info' => $data['info'],
-            'stock' => $data['stock']
+            'stock' => $data['stock'],
+            'seats' => $data['seats'],
+            'transmission' => $data['transmission']
         ];
         
-        $sql = "INSERT INTO cars (name, pic, info, stock) VALUES (:name, :pic, :info, :stock)";
+        $sql = "INSERT INTO cars (name, pic, info, stock, seats, transmission) VALUES (:name, :pic, :info, :stock, :seats, :transmission)";
         $stmt = \App\Config\Database::getInstance()->getConnection()->prepare($sql);
         $stmt->execute($carData);
         $carId = \App\Config\Database::getInstance()->getConnection()->lastInsertId();
@@ -55,13 +57,15 @@ class CarService
     public function updateCar($id, $data)
     {
         // 1. Update Car
-        $sql = "UPDATE cars SET name = :name, pic = :pic, info = :info, stock = :stock WHERE _id = :id";
+        $sql = "UPDATE cars SET name = :name, pic = :pic, info = :info, stock = :stock, seats = :seats, transmission = :transmission WHERE _id = :id";
         $stmt = \App\Config\Database::getInstance()->getConnection()->prepare($sql);
         $stmt->execute([
             'name' => $data['name'],
             'pic' => $data['pic'],
             'info' => $data['info'],
             'stock' => $data['stock'],
+            'seats' => $data['seats'],
+            'transmission' => $data['transmission'],
             'id' => $id
         ]);
 
