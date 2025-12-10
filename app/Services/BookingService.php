@@ -73,7 +73,22 @@ class BookingService
 
         return false;
     }
+    public function getBlockedDates($carId) {
+        return $this->bookingModel->getActiveBookingsByCar($carId);
+    }
+
+    public function getUserRentals($userId)
+    {
+        return $this->bookingModel->findByUserId($userId);
+    }
     
-    
+    public function getAllBookings() {
+        return $this->bookingModel->findAllWithDetails();
+    }
+
+    public function deleteBooking($id)
+    {
+        return $this->bookingModel->delete($id);
+    }
 
 }
