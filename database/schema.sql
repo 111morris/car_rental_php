@@ -60,7 +60,20 @@ CREATE TABLE car_rates (
     CONSTRAINT car_rates_car_id_fk FOREIGN KEY (car_id) REFERENCES cars(_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-
+CREATE TABLE bookings (
+    _id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    car_id INT NOT NULL,
+    mode ENUM('km', 'day', 'hour') NOT NULL,
+    value INT NOT NULL, -- Duration or Distance
+    total_cost INT NOT NULL,
+    start_date DATETIME,
+    end_date DATETIME,
+    status ENUM('active', 'completed', 'cancelled') DEFAULT 'active',
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT bookings_user_id_fk FOREIGN KEY (user_id) REFERENCES user(_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT bookings_car_id_fk FOREIGN KEY (car_id) REFERENCES cars(_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 -- -----------------------------
 -- SEED DATA
